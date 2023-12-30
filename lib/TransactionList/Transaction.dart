@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:bet/providers/TransactionListProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,30 +6,33 @@ import 'package:provider/provider.dart';
 class Transaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    int cancelCount = Provider.of<TransactionProvider>(context).cancelCount;
+
     return Consumer<TransactionProvider>(
-      builder: (context, transactionListProvider, child) {
+      builder: (context, transactionProvider, child) {
         List<DataRow> rows = [];
 
-        transactionListProvider.transactionData.forEach((transactionId, rowList) {
+        transactionProvider.transactionData.forEach((transactionId, rowList) {
           for (int i = 0; i < rowList.length; i++) {
             List<DataCell> cells = [];
 
             if (i == 0) {
-              cells.add(DataCell(Text(transactionId, style: TextStyle(color: Colors.white))));
+              cells.add(DataCell(Text(transactionId, style: const TextStyle(color: Colors.white))));
             } else {
-              cells.add(DataCell(Text('')));
+              cells.add(DataCell(const Text('')));
             }
 
             for (int j = 0; j < rowList[i].length; j++) {
               cells.add(
                 DataCell(
-                  Text(rowList[i][j], style: TextStyle(color: Colors.white)),
+                  Text(rowList[i][j], style: const TextStyle(color: Colors.white)),
                 ),
               );
             }
 
             while (cells.length < 7) {
-              cells.add(DataCell(Text('')));
+              cells.add(const DataCell(Text('')));
             }
 
             rows.add(DataRow(
@@ -44,10 +48,10 @@ class Transaction extends StatelessWidget {
             actions: [
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   child: Text(
                     "N.1 GAMING",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'YoungSerif',
                       fontWeight: FontWeight.bold,
                       fontSize: 50.0,
@@ -65,7 +69,7 @@ class Transaction extends StatelessWidget {
             body: SingleChildScrollView(
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 2),
+                  margin: const EdgeInsets.only(top: 2),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -73,16 +77,16 @@ class Transaction extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 20, 100, 30),
-                            child: Text("Click on TSN for Details", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                            margin: const EdgeInsets.fromLTRB(0, 20, 100, 30),
+                            child: const Text("Click on TSN for Details", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                           ),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 20, 0, 30),
-                            child: Text("Slips Cancelled: ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                            margin: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+                            child: const Text("Slips Cancelled: ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                           ),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 20, 0, 30),
-                            child: Text("0", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                            margin: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+                            child: Text("$cancelCount", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                           )
                         ],
                       ),
@@ -90,26 +94,26 @@ class Transaction extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         child: DataTable(
                           columnSpacing: 70.0,
-                          columns: <DataColumn>[
-                            DataColumn(
+                          columns: const <DataColumn>[
+                            const DataColumn(
                               label: Text('Transaction ID', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                             ),
-                            DataColumn(
+                            const DataColumn(
                               label: Text('TSN', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                             ),
-                            DataColumn(
+                            const DataColumn(
                               label: Text('GAME', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                             ),
-                            DataColumn(
+                            const DataColumn(
                               label: Text('Game Date Time', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                             ),
-                            DataColumn(
+                            const DataColumn(
                               label: Text('Slip Date Time', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                             ),
-                            DataColumn(
+                            const DataColumn(
                               label: Text('Points', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                             ),
-                            DataColumn(
+                            const DataColumn(
                               label: Text('Cancel', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                             ),
                           ],

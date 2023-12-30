@@ -1,6 +1,8 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:bet/Accounts.dart';
 import 'package:bet/Login/Login.dart';
 import 'package:bet/Result.dart';
+import 'package:bet/TransactionList/CancelReprint.dart';
 import 'package:bet/TransactionList/Transaction.dart';
 import 'package:bet/providers/game_selector.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +52,7 @@ void main() {
           '/accounts': (_) => Accounts(),
           '/home': (_) =>  Home(),
           '/transaction': (_) => Transaction(),
+          '/cancelReprint': (_) => CancelReprint(),
         },
 
       ),

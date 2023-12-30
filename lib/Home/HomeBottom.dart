@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:bet/API/TransactionApi.dart';
 import 'package:bet/Home.dart';
 import 'package:bet/Home/HomeMiddleOne.dart';
+import 'package:bet/TransactionList/CancelReprint.dart';
+import 'package:bet/providers/TransactionListProvider.dart';
 import 'package:bet/providers/game_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -31,8 +34,6 @@ class HomeBottom extends StatefulWidget {
 }
 
 class _PrintingWidget extends State<HomeBottom>{
-
-  // GlobalKey<_PrintingWidget> homePageKey = GlobalKey<_PrintingWidget>();
   
   late SharedPreferences loginData;
   String? userName;
@@ -49,12 +50,54 @@ class _PrintingWidget extends State<HomeBottom>{
     initial();
   }
 
+  void _showTimeSlotModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          content: Container(
+            width: 500.0,
+            height: 100.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                
+                Center(
+                  child: Text(
+                    'Please Select time slots!!!!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   
   @override
   Widget build(BuildContext context) {
    
     final select = Provider.of<GameSelector>(context, listen: false);
     final GlobalKey _key = GlobalKey();
+
+    int countTimeSlots = 0;
 
     String txnId = "TXN${DateTime.now().millisecondsSinceEpoch}";
     List<String> selectedCharacters = [];
@@ -66,6 +109,7 @@ class _PrintingWidget extends State<HomeBottom>{
         DateFormat('dd/MM/yyyy').format(now.add(Duration(days: 1)));
     select.timesValues.forEach((key, value) {
       if (value.selected == true) {
+        countTimeSlots += 1;
         selectedTimes +=
             "${select.showNextDayTimes ? nextDayDate : formattedDate} $key,";
       }
@@ -182,7 +226,12 @@ class _PrintingWidget extends State<HomeBottom>{
                 SizedBox(
                   height: mediaQuery.size.height * 0.04,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async{
+                      TransactionProvider transactionProvider = Provider.of<TransactionProvider>(context, listen: false);
+
+                                  await fetchTransactionList(userName??"", transactionProvider);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CancelReprint()));
+                    },
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
@@ -216,6 +265,7 @@ class _PrintingWidget extends State<HomeBottom>{
                   child: ElevatedButton(
                     onPressed:(){
                       widget.onButtonPressed();
+                      Provider.of<GameSelector>(context, listen: false).resetControllers();
                       Provider.of<GameSelector>(context, listen: false).resetTimes();
                       Provider.of<GameSelector>(context, listen: false).resetCheckBox();
                       Provider.of<GameSelector>(context, listen: false).resetMatrixData();
@@ -252,7 +302,8 @@ class _PrintingWidget extends State<HomeBottom>{
                   height: mediaQuery.size.height * 0.04,
                   child: ElevatedButton(
                     onPressed: () {
-                      selectedCharacters.clear();
+                      if(countTimeSlots!=0){
+                          selectedCharacters.clear();
                       final select =
                           Provider.of<GameSelector>(context, listen: false);
                       for (int i = 0; i < 10; i++) {
@@ -306,7 +357,7 @@ class _PrintingWidget extends State<HomeBottom>{
                         "transaction_id": txnId,
                         "gamedate_times": selectedTimes.split(",").map((time) => time.trim()).where((time) => time.isNotEmpty).toList(),
                         "slipdate_time": slipDate,
-                        "points": totalPoints.toString(),
+                        "points": (totalPoints).toString(),
                         "GamePlay": selectedCharacters
                       };
 
@@ -409,7 +460,7 @@ class _PrintingWidget extends State<HomeBottom>{
                                         ),
                                         SizedBox(height: 10),
                                         Text(
-                                          "Total Quantity : $totalPoints Total Points : $totalPoints",
+                                          "Total Quantity : ${totalPoints} Total Points : ${totalPoints}",
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -472,9 +523,10 @@ class _PrintingWidget extends State<HomeBottom>{
                                       height: 40.0,
                                       child: ElevatedButton(
                                         onPressed: () async {
-                                          widget.onDataChanged(txnId, totalPoints);
+                                          widget.onDataChanged(txnId, totalPoints*countTimeSlots);
 
                                           widget.onButtonPressed();
+                                          Provider.of<GameSelector>(context, listen: false).resetControllers();
                                           Provider.of<GameSelector>(context, listen: false).resetTimes();
                                           Provider.of<GameSelector>(context, listen: false).resetCheckBox();
                                           Provider.of<GameSelector>(context, listen: false).resetMatrixData();
@@ -487,6 +539,7 @@ class _PrintingWidget extends State<HomeBottom>{
                                                   rootNavigator: true)
                                               .pop();
                                         },
+                                        
                                         style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
@@ -522,6 +575,10 @@ class _PrintingWidget extends State<HomeBottom>{
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => printDialog);
+                      }else{
+                        _showTimeSlotModal(context);
+                      }
+                      
                     },
                     style: ButtonStyle(
                       backgroundColor:
@@ -649,7 +706,7 @@ class _PrintingWidget extends State<HomeBottom>{
                     width: mediaQuery.size.width * 0.04,
                     height: mediaQuery.size.height * 0.04,
                     child: TextField(
-                      controller: TextEditingController(text: "${widget.GrandTotal}"),
+                      controller: TextEditingController(text: "${widget.GrandTotal * countTimeSlots}"),
                       keyboardType:
                           TextInputType.number, // Set keyboard type to numeric
                       inputFormatters: <TextInputFormatter>[
@@ -686,7 +743,7 @@ class _PrintingWidget extends State<HomeBottom>{
                       width: mediaQuery.size.width * 0.04,
                       height: mediaQuery.size.height * 0.04,
                       child: TextField(
-                        controller: TextEditingController(text: "${widget.GrandTotal}"),
+                        controller: TextEditingController(text: "${widget.GrandTotal * countTimeSlots}"),
                         keyboardType: TextInputType
                             .number, // Set keyboard type to numeric
                         inputFormatters: <TextInputFormatter>[
@@ -742,116 +799,115 @@ class _PrintingWidget extends State<HomeBottom>{
     
   }
   
-  Future<void> _generatePdf(String txnId, String slipDate, String selectedTimes,List<String> selectedCharacters, int totalPoints ) async {
-    final pdf = pw.Document();
-    pdf.addPage(
-      pw.Page(
-        // pageFormat: PdfPageFormat.letter.copyWith(width: 200),
-        build: (context) {
-          return pw.Center(
-            child: pw.Column(
-            // mainAxisAlignment: pw.MainAxisAlignment.center,
+  Future<void> _generatePdf(String txnId, String slipDate, String selectedTimes, List<String> selectedCharacters, int totalPoints) async {
+  final pdf = pw.Document(compress: true);
+  pdf.addPage(
+    pw.Page(
+      build: (context) {
+        return pw.Container(
+          width: 80.0 * PdfPageFormat.mm,
+          child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(
                 "N.1 GAMING",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 18.0,
+                  fontSize: 12.0,
                   color: PdfColors.black,
                   letterSpacing: 2.0,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
                 "FOR AMUSEMENT ONLY",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 18.0,
+                  fontSize: 12.0,
                   color: PdfColors.black,
                   letterSpacing: 2.0,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
                 "${userName?.toUpperCase()}",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 14.0,
+                  fontSize: 12.0,
                   color: PdfColors.black,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
-                "ID : ${txnId}",
+                "ID: ${txnId}",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 14.0,
+                  fontSize: 12.0,
                   color: PdfColors.black,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
-                "Slip DT : ${slipDate}",
+                "Slip DT: ${slipDate}",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 14.0,
+                  fontSize: 10.0,
                   color: PdfColors.black,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
-                "Game Date : ",
+                "Game Date: ",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 14.0,
+                  fontSize: 10.0,
                   color: PdfColors.black,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
                 selectedTimes,
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 14.0,
+                  fontSize: 10.0,
                   color: PdfColors.black,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
                 selectedCharacters.join("  "),
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 14.0,
+                  fontSize: 10.0,
                   color: PdfColors.black,
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               pw.Text(
-                "Total Quantity : $totalPoints Total Points : $totalPoints",
+                "Total Quantity: $totalPoints Total Points: $totalPoints",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 14.0,
+                  fontSize: 10.0,
                   color: PdfColors.black,
                 ),
               ),
-              
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 3),
               _buildBarcodeWidget(txnId),
-              pw.SizedBox(height: 10),
+              pw.SizedBox(height: 3),
             ],
-          )
-            );
-        },
-      ),
-    );
-
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async {
-        return pdf.save();
+          ),
+        );
       },
-    );
-  }
+    ),
+  );
+
+  await Printing.layoutPdf(
+    onLayout: (PdfPageFormat format) async {
+      return pdf.save();
+    },
+  );
+}
+
 
   pw.Widget _buildBarcodeWidget(String txnId) {
     return pw.BarcodeWidget(

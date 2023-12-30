@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:bet/API/AccountAPI.dart';
 import 'package:bet/API/Credit.dart';
+import 'package:bet/API/RedeemSlip.dart';
 import 'package:bet/API/TransactionApi.dart';
 import 'package:bet/Home/Check_Button.dart';
 import 'package:bet/Home/CustomButton.dart';
@@ -176,49 +178,38 @@ class _QrCodeState extends State<Home> {
   }
 
   void _startTimerFor15Min() {
-    final now = DateTime.now();
+  // Get the current time
+  final now = DateTime.now();
 
-    if ((now.hour >= 22 && now.minute >= 00) ||
-        (now.hour <= 9 && now.minute <= 30)) {
-      // If the current time is 08:30 pm or later, calculate time until 9:30 am next day
-      final tomorrowStartTime =
-          DateTime(now.year, now.month, now.day + 1, 9, 30);
-      _remainingTime = tomorrowStartTime.difference(now);
-    } else {
-      // Calculate time until the next 15-minute mark
-      final next15Min =
-          DateTime(now.year, now.month, now.day, now.hour, now.minute)
-              .add(Duration(minutes: 15 - (now.minute % 15)));
+  // Calculate the time until the next 15-minute mark or 9:30 am next day
+  final nextEventTime = (now.hour >= 22 || now.hour < 9)
+      ? DateTime(now.year, now.month, now.day + 1, 9, 30)
+      : DateTime(now.year, now.month, now.day, now.hour, now.minute)
+          .add(Duration(minutes: 15 - (now.minute % 15)));
 
-      _remainingTime = next15Min.difference(now);
-    }
+  // Calculate the initial duration
+  _remainingTime = nextEventTime.difference(now);
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_remainingTime.inSeconds > 0) {
-          _remainingTime -= const Duration(seconds: 1);
-        } else {
-          // Recalculate for the next 15-minute mark or 9:30 am next day
-          final now = DateTime.now();
+  // Create and start the timer
+  _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    setState(() {
+      if (_remainingTime.inSeconds > 0) {
+        _remainingTime -= const Duration(seconds: 1);
+      } else {
+        // Recalculate for the next 15-minute mark or 9:30 am next day
+        final now = DateTime.now();
 
-          if ((now.hour >= 22 && now.minute >= 00) ||
-              (now.hour <= 9 && now.minute <= 30)) {
-            // If the current time is 08:30 pm or later, calculate time until 9:30 am next day
-            final tomorrowStartTime =
-                DateTime(now.year, now.month, now.day + 1, 9, 30);
-            _remainingTime = tomorrowStartTime.difference(now);
-          } else {
-            // Calculate time until the next 15-minute mark
-            final next15Min =
-                DateTime(now.year, now.month, now.day, now.hour, now.minute)
-                    .add(Duration(minutes: 15 - (now.minute % 15)));
+        final nextEventTime = (now.hour >= 22 || now.hour < 9)
+            ? DateTime(now.year, now.month, now.day + 1, 9, 30)
+            : DateTime(now.year, now.month, now.day, now.hour, now.minute)
+                .add(Duration(minutes: 15 - (now.minute % 15)));
 
-            _remainingTime = next15Min.difference(now);
-          }
-        }
-      });
+        _remainingTime = nextEventTime.difference(now);
+      }
     });
-  }
+  });
+}
+
 
   //api task
   List<dynamic> convertTimeFormat(List<dynamic> localDataList) {
@@ -259,6 +250,19 @@ class _QrCodeState extends State<Home> {
     }
   }
 
+  late int winningAmount;
+  void RedeemSlip(String transactionId) async{
+      final result = await redeemSlip(transactionId);
+      print(result);
+      winningAmount = result['win'];
+
+      if (result.containsKey('win')) {
+        print('Earned points: ${result['win']}');
+      } else {
+        print('Error: ${result['error']}');
+      }
+  }
+
   void fetchCreditData(String username) async {
     try {
       double creditvalue = await fetchCredit(username);
@@ -290,24 +294,37 @@ class _QrCodeState extends State<Home> {
     });
   }
 
-  void _showModal(BuildContext context) {
-    // Show modal with information for the clicked TSN
+  void _showModal(BuildContext context,int Amount) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
           content: Container(
-            width: 300.0,
+            width: 500.0,
             height: 100.0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Amount > 0 ?
                 Center(
                   child: Text(
-                    'You have won 2000Rs',
+                    'Your winning amount is ${Amount}',
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ):Center(
+                  child: Text(
+                    'Better Luck next time!!!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
                 ),
               ],
@@ -744,6 +761,9 @@ class _QrCodeState extends State<Home> {
                             child: Button_G(
                                 text: "ACCOUNT",
                                 onPressed: () {
+                                  DateTime today = DateTime.now();
+                                  DateTime date = DateTime(today.year, today.month, today.day);
+                                  fetchAccountDetails(userName??"",date,date);
                                   Navigator.of(context).pushNamed('/accounts');
                                 }),
                           ),
@@ -875,8 +895,10 @@ class _QrCodeState extends State<Home> {
                                         Button_G(
                                         text: "REDEEM",
                                         onPressed: () {
-                                          print(value.barcodeController.text);
-                                          _showModal(context);
+                                          if(value.barcodeController.text!=""){
+                                            RedeemSlip(value.barcodeController.text);
+                                            _showModal(context,winningAmount);
+                                          }
                                         });
                                     }
                                 )

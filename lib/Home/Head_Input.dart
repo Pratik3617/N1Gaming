@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 class Head_Input extends StatelessWidget {
   const Head_Input({super.key, required this.label, required this.controller});
