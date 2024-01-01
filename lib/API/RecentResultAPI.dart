@@ -3,7 +3,7 @@ import 'dart:convert';
 
 
 Future<Map<String, dynamic>> recentResult() async {
-  final apiUrl = 'http://3.108.237.235:8000/recentResult';
+  final apiUrl = 'http://3.108.237.235/recentResult';
 
 
   final response = await http.get(Uri.parse('$apiUrl'));

@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 Future<Map<String, dynamic>> redeemSlip(String transactionId) async {
-    final apiUrl = 'http://3.108.237.235:8000/redeem'; 
+    final apiUrl = 'http://3.108.237.235/redeem'; 
 
     try {
       final response = await http.post(

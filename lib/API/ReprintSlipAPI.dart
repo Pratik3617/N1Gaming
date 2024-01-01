@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> ReprintSlip(String tsnId) async {
-  final apiUrl = 'http://3.108.237.235:8000/reprintSlip/$tsnId';
+  final apiUrl = 'http://3.108.237.235/reprintSlip/$tsnId';
   try {
     final response = await http.post(Uri.parse(apiUrl));
 

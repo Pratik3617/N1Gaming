@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 Future<void> fetchAccountDateDetails(
       BuildContext context, String username,String date1,String date2) async {
-    final apiUrl = 'http://3.108.237.235:8000/showAccount';
+    final apiUrl = 'http://3.108.237.235/showAccount';
 
     final payload = {
       'username': username,

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> getUserStatus(String username) async {
-  final apiUrl = 'http://3.108.237.235:8000/userStatus/$username';
+  final apiUrl = 'http://3.108.237.235/userStatus/$username';
 
   try {
     final response = await http.get(Uri.parse(apiUrl));
