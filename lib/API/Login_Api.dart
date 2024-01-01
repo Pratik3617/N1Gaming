@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 Future<Map<String, dynamic>> userLogin(String username, String password) async {
-  final apiUrl = 'http://127.0.0.1:8000/userlogin';
+  final apiUrl = 'http://3.108.237.235:8000/userlogin';
 
   final payload = {
     'username': username,

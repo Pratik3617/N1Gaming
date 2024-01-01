@@ -4,6 +4,7 @@ import 'package:bet/Login/Login.dart';
 import 'package:bet/Result.dart';
 import 'package:bet/TransactionList/CancelReprint.dart';
 import 'package:bet/TransactionList/Transaction.dart';
+import 'package:bet/providers/AccountProvider.dart';
 import 'package:bet/providers/game_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,9 @@ void main() {
       providers: [
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AccountDetailsProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => GameSelector()

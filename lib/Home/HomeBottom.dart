@@ -2,8 +2,6 @@
 
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:bet/API/TransactionApi.dart';
-import 'package:bet/Home.dart';
-import 'package:bet/Home/HomeMiddleOne.dart';
 import 'package:bet/TransactionList/CancelReprint.dart';
 import 'package:bet/providers/TransactionListProvider.dart';
 import 'package:bet/providers/game_selector.dart';

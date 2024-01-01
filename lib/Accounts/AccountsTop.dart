@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:bet/API/AccountsDateAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountsTop extends StatefulWidget {
+  final Function(String date1, String date2) onDateChanged;
+  AccountsTop({required this.onDateChanged});
   @override
   _Top createState() => _Top();
 }
@@ -11,6 +15,22 @@ class _Top extends State<AccountsTop> {
   DateTime _dateTime1 = DateTime.now();
   DateTime _dateTime2 = DateTime.now();
   final _formKey = GlobalKey<FormState>();
+
+  late SharedPreferences loginData;
+  String? userName;
+
+  void initial() async {
+    loginData = await SharedPreferences.getInstance();
+    setState((){
+        userName = loginData.getString('username');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initial();
+  }
 
   void _showDatePicker1() {
     showDatePicker(
@@ -44,7 +64,10 @@ class _Top extends State<AccountsTop> {
 
   void _submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Your logic when the form is submitted
+      String date1 = DateFormat('dd-MM-yyyy').format(_dateTime1);
+      String date2 = DateFormat('dd-MM-yyyy').format(_dateTime2);
+      fetchAccountDateDetails(context,userName??"",date1,date2);
+      widget.onDateChanged(date1,date2);
       print('Form submitted');
     }
   }

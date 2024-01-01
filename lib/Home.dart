@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:bet/API/AccountAPI.dart';
+import 'package:bet/API/AccountsDateAPI.dart';
 import 'package:bet/API/Credit.dart';
 import 'package:bet/API/RedeemSlip.dart';
 import 'package:bet/API/TransactionApi.dart';
@@ -88,60 +88,15 @@ class _QrCodeState extends State<Home> {
     });
   }
   
-
   //next game timings
   List<String> times = [
-    "09:30:00 AM",
-    "09:45:00 AM",
-    "10:00:00 AM",
-    "10:15:00 AM",
-    "10:30:00 AM",
-    "10:45:00 AM",
-    "11:00:00 AM",
-    "11:15:00 AM",
-    "11:30:00 AM",
-    "11:45:00 AM",
-    "12:00:00 PM",
-    "12:15:00 PM",
-    "12:30:00 PM",
-    "12:45:00 PM",
-    "01:00:00 PM",
-    "01:15:00 PM",
-    "01:30:00 PM",
-    "01:45:00 PM",
-    "02:00:00 PM",
-    "02:15:00 PM",
-    "02:30:00 PM",
-    "02:45:00 PM",
-    "03:00:00 PM",
-    "03:15:00 PM",
-    "03:30:00 PM",
-    "03:45:00 PM",
-    "04:00:00 PM",
-    "04:15:00 PM",
-    "04:30:00 PM",
-    "04:45:00 PM",
-    "05:00:00 PM",
-    "05:15:00 PM",
-    "05:30:00 PM",
-    "05:45:00 PM",
-    "06:00:00 PM",
-    "06:15:00 PM",
-    "06:30:00 PM",
-    "06:45:00 PM",
-    "07:00:00 PM",
-    "07:15:00 PM",
-    "07:30:00 PM",
-    "07:45:00 PM",
-    "08:00:00 PM",
-    "08:15:00 PM",
-    "08:30:00 PM",
-    "08:45:00 PM",
-    "09:00:00 PM",
-    "09:15:00 PM",
-    "09:30:00 PM",
-    "09:45:00 PM",
-    "10:00:00 PM"
+    "09:30:00 AM","09:45:00 AM","10:00:00 AM",
+    "10:15:00 AM","10:30:00 AM","10:45:00 AM","11:00:00 AM","11:15:00 AM","11:30:00 AM","11:45:00 AM","12:00:00 PM",
+    "12:15:00 PM","12:30:00 PM","12:45:00 PM","01:00:00 PM","01:15:00 PM","01:30:00 PM","01:45:00 PM","02:00:00 PM",
+    "02:15:00 PM","02:30:00 PM","02:45:00 PM","03:00:00 PM","03:15:00 PM","03:30:00 PM","03:45:00 PM","04:00:00 PM",
+    "04:15:00 PM","04:30:00 PM","04:45:00 PM","05:00:00 PM","05:15:00 PM","05:30:00 PM","05:45:00 PM","06:00:00 PM",
+    "06:15:00 PM","06:30:00 PM","06:45:00 PM","07:00:00 PM","07:15:00 PM","07:30:00 PM","07:45:00 PM","08:00:00 PM",
+    "08:15:00 PM","08:30:00 PM","08:45:00 PM","09:00:00 PM","09:15:00 PM","09:30:00 PM","09:45:00 PM","10:00:00 PM"
   ];
 
   int _currentIndex = 0;
@@ -760,10 +715,10 @@ class _QrCodeState extends State<Home> {
                             padding: EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 5.0),
                             child: Button_G(
                                 text: "ACCOUNT",
-                                onPressed: () {
-                                  DateTime today = DateTime.now();
-                                  DateTime date = DateTime(today.year, today.month, today.day);
-                                  fetchAccountDetails(userName??"",date,date);
+                                onPressed: () async{
+                                  DateTime now = DateTime.now();
+                                  String formattedDate = DateFormat('dd-MM-yyyy').format(now);
+                                  fetchAccountDateDetails(context,userName??"",formattedDate, formattedDate);
                                   Navigator.of(context).pushNamed('/accounts');
                                 }),
                           ),

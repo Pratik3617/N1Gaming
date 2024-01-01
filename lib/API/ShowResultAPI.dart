@@ -3,7 +3,7 @@ import 'dart:convert';
 
 
 Future<Map<String, dynamic>> fetchDataForDate(DateTime date) async {
-  final apiUrl = 'http://127.0.0.1:8000/showResultApp';
+  final apiUrl = 'http://3.108.237.235:8000/showResultApp';
 
   final formattedDate = '${date.year}-${date.month}-${date.day}';
 

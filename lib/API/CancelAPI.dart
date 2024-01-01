@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<void> CancelTsn(String tsnId) async {
-  final apiUrl = 'http://127.0.0.1:8000/cancelTsn/$tsnId';
+  final apiUrl = 'http://3.108.237.235:8000/cancelTsn/$tsnId';
 
   try {
     final response = await http.post(Uri.parse(apiUrl));

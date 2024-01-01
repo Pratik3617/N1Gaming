@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 Future<double> fetchCredit(String username) async {
-  final apiUrl = 'http://127.0.0.1:8000/credit';
+  final apiUrl = 'http://3.108.237.235:8000/credit';
 
   final response = await http.get(Uri.parse('$apiUrl?username=$username'));
   
