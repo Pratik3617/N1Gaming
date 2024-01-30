@@ -13,14 +13,14 @@ class Result_Display_Box extends StatelessWidget {
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Container(
-      width: mediaQuery.size.width * 0.135,
+      width: mediaQuery.size.width * 0.128,
       height: mediaQuery.size.height * 0.05,
       margin: const EdgeInsets.fromLTRB(4.0, 2.0, 0.0, 0.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-              width: 50.0,
+              width: mediaQuery.size.width * 0.03,
               height: 38.0,
               alignment: Alignment.center,
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
@@ -49,7 +49,7 @@ class Result_Display_Box extends StatelessWidget {
               )
           ),
           Container(
-              width: 50.0,
+              width: mediaQuery.size.width * 0.03,
               height: 38.0,
               alignment: Alignment.center,
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
@@ -78,7 +78,7 @@ class Result_Display_Box extends StatelessWidget {
               )
           ),
           Container(
-              width: 50.0,
+              width: mediaQuery.size.width * 0.03,
               height: 38.0,
               alignment: Alignment.center,
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
@@ -107,7 +107,7 @@ class Result_Display_Box extends StatelessWidget {
               )
           ),
           Container(
-              width: 50.0,
+              width: mediaQuery.size.width * 0.03,
               height: 38.0,
               alignment: Alignment.center,
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),

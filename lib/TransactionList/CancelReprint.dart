@@ -302,25 +302,20 @@ class CancelReprintWidget extends State<CancelReprint> {
       appBar: AppBar(
         toolbarHeight: 100.0,
         backgroundColor: Colors.blueGrey,
-        actions: [
-          const Expanded(
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: const Text(
-                "N.1 GAMING",
-                style: TextStyle(
-                  fontFamily: 'YoungSerif',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 50.0,
-                  color: Color(0xFFF3FDE8),
-                  letterSpacing: 2.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
+        title: Text(
+          "N.1 GAMING",
+          style: TextStyle(
+            fontFamily: 'YoungSerif',
+            fontWeight: FontWeight.bold,
+            fontSize: 60.0, // Adjust the font size as needed
+            color: Color(0xFFF3FDE8),
+            letterSpacing: 2.0,
           ),
-        ],
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true, // Center the title
       ),
+
       body: Scaffold(
         backgroundColor: const Color.fromARGB(255, 42, 41, 41),
         body: SingleChildScrollView(
@@ -394,6 +389,7 @@ class CancelReprintWidget extends State<CancelReprint> {
       build: (context) {
         return pw.Container(
           width: 80.0 * PdfPageFormat.mm,
+          margin: const pw.EdgeInsets.all(0),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
@@ -411,9 +407,9 @@ class CancelReprintWidget extends State<CancelReprint> {
                 "FOR AMUSEMENT ONLY",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 12.0,
+                  fontSize: 11.0,
                   color: PdfColors.black,
-                  letterSpacing: 2.0,
+                  letterSpacing: 1.0,
                 ),
               ),
               pw.SizedBox(height: 3),
@@ -421,7 +417,7 @@ class CancelReprintWidget extends State<CancelReprint> {
                 "${userName?.toUpperCase()}",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 12.0,
+                  fontSize: 11.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -430,7 +426,7 @@ class CancelReprintWidget extends State<CancelReprint> {
                 "ID: $txnId",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 12.0,
+                  fontSize: 11.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -439,7 +435,7 @@ class CancelReprintWidget extends State<CancelReprint> {
                 "Slip DT: $slipDate",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -448,7 +444,7 @@ class CancelReprintWidget extends State<CancelReprint> {
                 "Game Date: ",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -457,7 +453,7 @@ class CancelReprintWidget extends State<CancelReprint> {
                 selectedTimes,
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -466,7 +462,7 @@ class CancelReprintWidget extends State<CancelReprint> {
                 selectedCharacters.join("  "),
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -475,13 +471,13 @@ class CancelReprintWidget extends State<CancelReprint> {
                 "Total Quantity: $totalPoints Total Points: $totalPoints",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
               pw.SizedBox(height: 3),
               _buildBarcodeWidget(txnId),
-              pw.SizedBox(height: 3),
+              pw.SizedBox(height: 4),
             ],
           ),
         );
@@ -504,8 +500,8 @@ class CancelReprintWidget extends State<CancelReprint> {
                               useCode128C:
                                   false),
       data: txnId,
-      width: 300,
-      height: 50,
+      width: 280,
+      height: 40,
     );
   }
 }

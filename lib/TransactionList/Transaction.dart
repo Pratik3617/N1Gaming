@@ -43,27 +43,22 @@ class Transaction extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 100.0,
-            backgroundColor: Colors.blueGrey,
-            actions: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  child: Text(
-                    "N.1 GAMING",
-                    style: const TextStyle(
-                      fontFamily: 'YoungSerif',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50.0,
-                      color: Color(0xFFF3FDE8),
-                      letterSpacing: 2.0,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
+          toolbarHeight: 100.0,
+          backgroundColor: Colors.blueGrey,
+          title: Text(
+            "N.1 GAMING",
+            style: TextStyle(
+              fontFamily: 'YoungSerif',
+              fontWeight: FontWeight.bold,
+              fontSize: 60.0, // Adjust the font size as needed
+              color: Color(0xFFF3FDE8),
+              letterSpacing: 2.0,
+            ),
+            textAlign: TextAlign.center,
           ),
+          centerTitle: true, // Center the title
+        ),
+
           body: Scaffold(
             backgroundColor: const Color.fromARGB(255, 42, 41, 41),
             body: SingleChildScrollView(

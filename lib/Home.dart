@@ -40,12 +40,6 @@ class Home extends StatefulWidget {
 }
 
 class _QrCodeState extends State<Home> {
-
-  final List<TextEditingController> rowControllers =
-      List.generate(10, (index) => TextEditingController());
-  final List<TextEditingController> columnControllers =
-      List.generate(10, (index) => TextEditingController());
-
   
   late SharedPreferences loginData;
   late SharedPreferences creditData;
@@ -59,17 +53,6 @@ class _QrCodeState extends State<Home> {
   DateTime _currentTime = DateTime.now();
   String transId = "";
   int endpoints = 0;
-
-  void clearControllers() {
-    for (var controller in rowControllers) {
-      controller.text = "";
-    }
-
-    for (var controller in columnControllers) {
-      controller.text = "";
-    }
-  }
-
 
   @override
   void initState() {
@@ -166,6 +149,7 @@ class _QrCodeState extends State<Home> {
 }
 
 
+
   //api task
   List<dynamic> convertTimeFormat(List<dynamic> localDataList) {
     for (int i = 0; i < localDataList.length; i++) {
@@ -177,7 +161,6 @@ class _QrCodeState extends State<Home> {
 
       localDataList[i][0] = formattedTime;
     }
-
     return localDataList;
   }
 
@@ -307,9 +290,11 @@ class _QrCodeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
     DateTime now1 = DateTime.now();
-    String formattedDate = "${now1.day}-${now1.month}-${now1.year}";
-    String formattedTime = "${now1.hour}:${now1.minute}:${now1.second}";
+    String formattedDate = "${now1.day.toString().padLeft(2, '0')}-${now1.month.toString().padLeft(2, '0')}-${now1.year}";
+
+      String formattedTime = "${now1.hour.toString().padLeft(2, '0')}:${now1.minute.toString().padLeft(2, '0')}:${now1.second.toString().padLeft(2, '0')}";
 
     String _formatDuration(Duration duration) {
       String twoDigits(int n) {
@@ -702,6 +687,8 @@ class _QrCodeState extends State<Home> {
           padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 2.0),
           color: Colors.blueGrey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -876,8 +863,8 @@ class _QrCodeState extends State<Home> {
                     Consumer<GameSelector>(
                       builder: (context, value, child) {
                         return HomeMiddleOne(
-                          rowControllers: rowControllers,
-                          columnControllers: columnControllers,
+                          rowControllers: Provider.of<GameSelector>(context).rowControllers,
+                          columnControllers: Provider.of<GameSelector>(context).columnControllers,
                           matrixControllers: value.controllers,
                           context: context,
                         );
@@ -897,7 +884,6 @@ class _QrCodeState extends State<Home> {
               ),
               Consumer2<UserProvider,GameSelector>(builder: (context, userProvider,gameSelector, child) {
                 return HomeBottom(
-                    onButtonPressed: clearControllers,
                     GrandTotal: GrandTotal,
                     onDataChanged: updateData,
                     );

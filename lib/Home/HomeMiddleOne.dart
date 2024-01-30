@@ -114,9 +114,10 @@ _updateMatrixForColumn(int columnIndex) {
     
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
@@ -125,13 +126,13 @@ _updateMatrixForColumn(int columnIndex) {
                 Container(
                     width: mediaQuery.size.width * 0.09,
                     height: mediaQuery.size.height * 0.05,
-                    margin: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+                    margin: const EdgeInsets.fromLTRB(3.0, 5.0, 0.0, 0.0),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.yellow, width: 2.0),
                         borderRadius: BorderRadius.circular(2.0)),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 7.0, 2.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 5.0, 2.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -167,7 +168,7 @@ _updateMatrixForColumn(int columnIndex) {
                         border: Border.all(color: Colors.yellow, width: 2.0),
                         borderRadius: BorderRadius.circular(2.0)),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 7.0, 2.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 5.0, 2.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -207,7 +208,7 @@ _updateMatrixForColumn(int columnIndex) {
                       Container(
                         width: mediaQuery.size.width * 0.05,
                           child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 2.0, 7.0, 2.0),
+                        padding: const EdgeInsets.fromLTRB(0.0, 2.0, 5.0, 2.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -222,7 +223,7 @@ _updateMatrixForColumn(int columnIndex) {
                               "All",
                               style: TextStyle(
                                   fontFamily: "SansSerif",
-                                  fontSize: 18.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             )
@@ -232,7 +233,7 @@ _updateMatrixForColumn(int columnIndex) {
                       Container(
                           width: mediaQuery.size.width * 0.06,
                           child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 2.0, 7.0, 2.0),
+                        padding: const EdgeInsets.fromLTRB(0.0, 2.0, 5.0, 2.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -247,7 +248,7 @@ _updateMatrixForColumn(int columnIndex) {
                               "Even",
                               style: TextStyle(
                                   fontFamily: "SansSerif",
-                                  fontSize: 18.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             )
@@ -257,7 +258,7 @@ _updateMatrixForColumn(int columnIndex) {
                       Container(
                         width: mediaQuery.size.width * 0.05,
                           child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 2.0, 7.0, 2.0),
+                        padding: const EdgeInsets.fromLTRB(0.0, 2.0, 5.0, 2.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -272,7 +273,7 @@ _updateMatrixForColumn(int columnIndex) {
                               "Odd",
                               style: TextStyle(
                                   fontFamily: "SansSerif",
-                                  fontSize: 18.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             )
@@ -296,7 +297,7 @@ _updateMatrixForColumn(int columnIndex) {
                         border: Border.all(color: Colors.yellow, width: 2.0),
                         borderRadius: BorderRadius.circular(2.0)),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 7.0, 2.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 5.0, 2.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -347,10 +348,11 @@ _updateMatrixForColumn(int columnIndex) {
                           ],
                           style: const TextStyle(
                               fontSize: 18.0,
-                              color: Colors.white,
+                              color: Colors.black,
                               fontFamily: "SanSerif"),
                           decoration: InputDecoration(
                             filled: true,
+                            contentPadding: EdgeInsets.fromLTRB(5, 0, 0, 3),
                             fillColor: Colors.yellow[600],
                             enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
@@ -397,7 +399,7 @@ _updateMatrixForColumn(int columnIndex) {
                         border: Border.all(color: Colors.yellow, width: 2.0),
                         borderRadius: BorderRadius.circular(2.0)),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 7.0, 2.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 5.0, 2.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -424,7 +426,7 @@ _updateMatrixForColumn(int columnIndex) {
           ],
         ),
         Container(
-          width: 920.0,
+          width: mediaQuery.size.width * 0.6,
           margin: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 0.0),
           child: Column(
             children: [
@@ -432,14 +434,24 @@ _updateMatrixForColumn(int columnIndex) {
                 children: List.generate(11, (j) {
                   if (j == 0) {
                     return SizedBox(
-                        width: mediaQuery.size.width * 0.051); // to adjust the layout alignment
+                        width: mediaQuery.size.width * 0.042); // to adjust the layout alignment
                   }
-                  return Container(
-                    margin: const EdgeInsets.fromLTRB(13, 3, 17, 3),
-                    child: Button(
-                      controller: widget.columnControllers[j - 1],
-                    ),
-                  );
+                  else if (j<9){
+                    return Container(
+                      margin: const EdgeInsets.fromLTRB(13, 3, 17, 3),
+                      child: Button(
+                        controller: widget.columnControllers[j - 1],
+                      ),
+                    );
+                  }else{
+                    return Container(
+                      margin: const EdgeInsets.fromLTRB(17, 3, 5, 3),
+                      child: Button(
+                        controller: widget.columnControllers[j - 1],
+                      ),
+                    );
+                  }
+                  
                 }),
               ),
               for (var i = 0; i < 10; i++) ...[

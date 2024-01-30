@@ -46,7 +46,7 @@ class HomeRightState extends State<HomeRight> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          width: mediaQuery.size.width * 0.135,
+          width: mediaQuery.size.width * 0.128,
           height: mediaQuery.size.height * 0.05,
           margin: const EdgeInsets.fromLTRB(5.0, 5.0, 0.0, 0.0),
           decoration: BoxDecoration(
@@ -76,14 +76,14 @@ class HomeRightState extends State<HomeRight> {
           ),
         ),
         Container(
-          width: mediaQuery.size.width * 0.137,
+          width: mediaQuery.size.width * 0.129,
           height: mediaQuery.size.height * 0.05,
           margin: const EdgeInsets.fromLTRB(6.0, 2.0, 0.0, 0.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: mediaQuery.size.width * 0.135,
+                width: mediaQuery.size.width * 0.128,
         
                 alignment: Alignment.center,
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),

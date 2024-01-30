@@ -21,7 +21,7 @@ class _InputPageState extends State<HomeLeft> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            width: mediaQuery.size.width * 0.125,
+            width: mediaQuery.size.width * 0.120,
             height: mediaQuery.size.height * 0.05,
             margin: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
             decoration: BoxDecoration(
@@ -57,7 +57,7 @@ class _InputPageState extends State<HomeLeft> {
               },
             )),
         Container(
-          width: mediaQuery.size.width * 0.125,
+          width: mediaQuery.size.width * 0.120,
           height: mediaQuery.size.height * 0.05,
           margin: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
           decoration: BoxDecoration(
@@ -68,7 +68,7 @@ class _InputPageState extends State<HomeLeft> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: mediaQuery.size.width * 0.06,
+                width: mediaQuery.size.width * 0.058,
                 height: 38.0,
                 alignment: Alignment.center,
                 color: Colors.green,
@@ -78,7 +78,7 @@ class _InputPageState extends State<HomeLeft> {
                     )),
               ),
               Container(
-                width: mediaQuery.size.width * 0.06,
+                width: mediaQuery.size.width * 0.058,
                 height:  mediaQuery.size.height * 0.05,
                 alignment: Alignment.center,
                 color: Colors.yellow[600],
@@ -94,14 +94,14 @@ class _InputPageState extends State<HomeLeft> {
           Consumer<GameSelector>(
             builder: (context, select, child) {
               return Container(
-                width: mediaQuery.size.width * 0.125,
+                width: mediaQuery.size.width * 0.120,
                 height:  mediaQuery.size.height * 0.05,
                 margin: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Check_Button(
-                        width: mediaQuery.size.width * 0.0625,
+                        width: mediaQuery.size.width * 0.06,
                         height:  mediaQuery.size.height * 0.05,
                         isChecked: select.atIsChecked || select.ajIsChecked
                             ? true
@@ -120,7 +120,7 @@ class _InputPageState extends State<HomeLeft> {
                               select.checkbox[i], value);
                         }),
                     Check_Button(
-                        width: mediaQuery.size.width * 0.0625,
+                        width: mediaQuery.size.width * 0.06,
                         height:  mediaQuery.size.height * 0.05,
                         isChecked: select.atIsChecked || select.ktIsChecked
                             ? true

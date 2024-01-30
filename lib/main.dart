@@ -12,6 +12,7 @@ import 'Home.dart';
 import 'package:bet/providers/ShowResult.dart';
 import 'package:bet/providers/LoginProvider.dart';
 import 'package:bet/providers/TransactionListProvider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 
 const TextStyle customTextStyle = TextStyle(
@@ -21,7 +22,8 @@ const TextStyle customTextStyle = TextStyle(
 );
 
 
-void main() {
+void main() async{
+  await Hive.initFlutter();
   runApp(
     MultiProvider(
       providers: [
@@ -50,7 +52,7 @@ void main() {
             bodyText2: customTextStyle,
           ),
         ),
-        home: const Login(),
+        home: Home(),
         routes: {
           '/result': (_) => Result(),
           '/accounts': (_) => Accounts(),
@@ -58,7 +60,6 @@ void main() {
           '/transaction': (_) => Transaction(),
           '/cancelReprint': (_) => CancelReprint(),
         },
-
       ),
     ),
   );

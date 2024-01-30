@@ -4,37 +4,8 @@ import 'package:bet/Login/Login.dart';
 import 'package:flutter/material.dart';
 import '../API/Login_Api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class SessionManager {
-  static const String keyLastLoginTime = 'last_login_time';
-
-  static Future<void> setLastLoginTime() async {
-    final prefs = await SharedPreferences.getInstance();
-    final currentTime = DateTime.now().millisecondsSinceEpoch;
-    await prefs.setInt(keyLastLoginTime, currentTime);
-  }
-
-  static Future<int?> getLastLoginTime() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(keyLastLoginTime);
-  }
-
-  static Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-  }
-
-  static Future<bool> isSessionExpired() async {
-    final lastLoginTime = await getLastLoginTime();
-    if (lastLoginTime != null) {
-      final currentTime = DateTime.now().millisecondsSinceEpoch;
-      const int oneDayInMilliseconds = 86400000; // 24 hours in milliseconds
-      // const int oneDayInMilliseconds = 10000;
-      return currentTime - lastLoginTime > oneDayInMilliseconds;
-    }
-    return false; // If last login time is not set, assume the session is not expired
-  }
-}
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -45,7 +16,11 @@ class _LoginScreenState extends State<LoginForm> {
   final _loginFormKey = GlobalKey<FormState>();
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  late Box box1;
+
+
   String message = "";
+  bool isChecked = false;
 
   late SharedPreferences loginData;
   late SharedPreferences creditData;
@@ -59,7 +34,7 @@ class _LoginScreenState extends State<LoginForm> {
       final response = await userLogin(username, password);
       if (response['message'] == 'Login successful') {
         int credit = response['credit'];
-        await SessionManager.setLastLoginTime(); // Set the last login time
+        // await SessionManager.setLastLoginTime(); // Set the last login time
         loginData.setBool('login', false);
         loginData.setString("username", username);
         creditData.setString("credit", credit.toString());
@@ -86,22 +61,35 @@ class _LoginScreenState extends State<LoginForm> {
   void initState() {
     super.initState();
     check_if_already_login();
+    createBox();
+  }
+
+  void getData() async{
+    if(box1.get('username')!=null){
+      _usernameController.text = box1.get('username');
+      isChecked = true;
+      setState(() {
+        
+      });
+    }
+    if(box1.get('password')!=null){
+      _passwordController.text = box1.get('password');
+      isChecked = true;
+      setState(() {
+        
+      });
+    }
+  }
+
+  void createBox() async {
+    box1 = await Hive.openBox('loginData');
+    getData();
   }
 
   void check_if_already_login() async {
   loginData = await SharedPreferences.getInstance();
   creditData = await SharedPreferences.getInstance();
   newuser = loginData.getBool('login') ?? true;
-
-  if (!newuser) {
-    if (await SessionManager.isSessionExpired()) {
-      // Logout the user if the session is expired
-      await SessionManager.logout();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-    } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-    }
-  }
 }
 
 
@@ -133,11 +121,27 @@ class _LoginScreenState extends State<LoginForm> {
               hintText: 'Enter your password',
             ),
           ),
-          
-          SizedBox(height: 44),
+          SizedBox(height: 18),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Remember Me",style: TextStyle(color: Colors.black),),
+              Checkbox(
+                value: isChecked,
+                onChanged: (value){
+                  isChecked = !isChecked;
+                  setState(() {
+
+                  });
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 22),
           ElevatedButton(
             onPressed: () {
               _login(context);
+              saveUserData();
             },
             style: ButtonStyle(
               backgroundColor:
@@ -163,4 +167,12 @@ class _LoginScreenState extends State<LoginForm> {
       ),
     );
   }
+
+  void saveUserData(){
+    if(isChecked){
+      box1.put('username', _usernameController.text);
+      box1.put('password', _passwordController.text);
+    }
+  }
+
 }

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:bet/API/TransactionApi.dart';
+import 'package:bet/Home/HomeMiddleTwo.dart';
 import 'package:bet/TransactionList/CancelReprint.dart';
 import 'package:bet/providers/TransactionListProvider.dart';
 import 'package:bet/providers/game_selector.dart';
@@ -18,12 +18,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeBottom extends StatefulWidget {
 
   final int GrandTotal;
-  final VoidCallback onButtonPressed;
   final Function(String transID, int endpoint) onDataChanged;
   const HomeBottom(
       {super.key,
       required this.GrandTotal,
-      required this.onButtonPressed,
       required this.onDataChanged});
 
   @override
@@ -262,7 +260,7 @@ class _PrintingWidget extends State<HomeBottom>{
                   height: mediaQuery.size.height * 0.04,
                   child: ElevatedButton(
                     onPressed:(){
-                      widget.onButtonPressed();
+                      Provider.of<GameSelector>(context, listen: false).resetRowColumnsControllers();
                       Provider.of<GameSelector>(context, listen: false).resetControllers();
                       Provider.of<GameSelector>(context, listen: false).resetTimes();
                       Provider.of<GameSelector>(context, listen: false).resetCheckBox();
@@ -522,15 +520,13 @@ class _PrintingWidget extends State<HomeBottom>{
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           widget.onDataChanged(txnId, totalPoints*countTimeSlots);
-
-                                          widget.onButtonPressed();
+                                          Provider.of<GameSelector>(context, listen: false).resetRowColumnsControllers();
                                           Provider.of<GameSelector>(context, listen: false).resetControllers();
                                           Provider.of<GameSelector>(context, listen: false).resetTimes();
                                           Provider.of<GameSelector>(context, listen: false).resetCheckBox();
                                           Provider.of<GameSelector>(context, listen: false).resetMatrixData();
 
                                           await _generatePdf(txnId, slipDate, selectedTimes,selectedCharacters,totalPoints);
-
                                     
                                           await select.postGameData(body);
                                           Navigator.of(context,
@@ -804,6 +800,7 @@ class _PrintingWidget extends State<HomeBottom>{
       build: (context) {
         return pw.Container(
           width: 80.0 * PdfPageFormat.mm,
+          margin: const pw.EdgeInsets.only(right: 5),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
@@ -821,9 +818,9 @@ class _PrintingWidget extends State<HomeBottom>{
                 "FOR AMUSEMENT ONLY",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 12.0,
+                  fontSize: 11.0,
                   color: PdfColors.black,
-                  letterSpacing: 2.0,
+                  letterSpacing: 1.0,
                 ),
               ),
               pw.SizedBox(height: 3),
@@ -831,7 +828,7 @@ class _PrintingWidget extends State<HomeBottom>{
                 "${userName?.toUpperCase()}",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 12.0,
+                  fontSize: 11.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -858,7 +855,7 @@ class _PrintingWidget extends State<HomeBottom>{
                 "Game Date: ",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -867,7 +864,7 @@ class _PrintingWidget extends State<HomeBottom>{
                 selectedTimes,
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -876,7 +873,7 @@ class _PrintingWidget extends State<HomeBottom>{
                 selectedCharacters.join("  "),
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
@@ -885,13 +882,13 @@ class _PrintingWidget extends State<HomeBottom>{
                 "Total Quantity: $totalPoints Total Points: $totalPoints",
                 style: pw.TextStyle(
                   font: pw.Font.helveticaBold(),
-                  fontSize: 10.0,
+                  fontSize: 9.0,
                   color: PdfColors.black,
                 ),
               ),
               pw.SizedBox(height: 3),
               _buildBarcodeWidget(txnId),
-              pw.SizedBox(height: 3),
+              pw.SizedBox(height: 4),
             ],
           ),
         );
@@ -914,8 +911,8 @@ class _PrintingWidget extends State<HomeBottom>{
                               useCode128C:
                                   false), // Barcode type and settings
       data: txnId,
-      width: 300,
-      height: 50,
+      width: 250,
+      height: 40,
     );
   }
 }

@@ -24,6 +24,7 @@ class GameSelector with ChangeNotifier {
   }
 
   postGameData(dynamic body) async {
+    print("call play button");
     var headers = {'Content-Type': 'application/json'};
     body = jsonEncode(body);
     http.Response r = await http.post(Uri.parse("http://3.108.237.235/saveTransaction"),
@@ -480,6 +481,12 @@ class GameSelector with ChangeNotifier {
     notifyListeners();
   }
 
+  final List<TextEditingController> rowControllers =
+      List.generate(10, (index) => TextEditingController());
+  final List<TextEditingController> columnControllers =
+      List.generate(10, (index) => TextEditingController());
+
+
   void handleCheckboxChange(String key, bool? value) {
     for (int i = 0; i < 10; i++) {
       for (int j = 0; j < 10; j++) {
@@ -487,6 +494,8 @@ class GameSelector with ChangeNotifier {
         matrixList[selectedAlphabet][i][j] = textValue != "" ? textValue : "";
       }
     }
+
+    // print("check box called");
     // Set all other checkboxes to false
     checkBoxValues.forEach((k, v) => checkBoxValues[k] = false);
     // Set the selected checkbox to true
@@ -500,6 +509,8 @@ class GameSelector with ChangeNotifier {
           controllers[i][j].text =
               matrixList[selectedAlphabet][i][j].toString();
         }
+        rowControllers[i].text = "";
+        columnControllers[i].text = "";
       }
     }
 
@@ -648,7 +659,6 @@ void resetMatrixData() {
         }
       }
     }
-
     // Notify listeners that the data has changed
     notifyListeners();
   }
@@ -667,6 +677,13 @@ void resetMatrixData() {
       }
     }
     notifyListeners();
+  }
+
+  resetRowColumnsControllers(){
+    for(int i=0;i<10;++i){
+      rowControllers[i].text = "";
+      columnControllers[i].text = "";
+    }
   }
 
 

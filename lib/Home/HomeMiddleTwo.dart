@@ -36,7 +36,7 @@ class _updatePoints extends State<HomeMiddleTwo> {
         controller.addListener(_updateSum);
       }
     }
-    _updateSum();
+    // _updateSum();
   }
 
   _updateSum() {
@@ -91,11 +91,14 @@ class _updatePoints extends State<HomeMiddleTwo> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
-    return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start, 
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
       Container(
         width: mediaQuery.size.width * 0.1,
         height: mediaQuery.size.height * 0.05,
-        margin: const EdgeInsets.fromLTRB(5.0, 5.0, 0.0, 0.0),
+        margin: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
         decoration: BoxDecoration(
           color: Colors.yellow[600],
           border: Border.all(color: Colors.white, width: 2.0),

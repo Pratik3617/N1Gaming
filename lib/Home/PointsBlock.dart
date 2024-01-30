@@ -15,7 +15,7 @@ class PointsBlock extends StatelessWidget {
     return Container(
       width: mediaQuery.size.width * 0.1,
       height: mediaQuery.size.height * 0.05,
-      margin: const EdgeInsets.fromLTRB(4.0, 2.0, 0.0, 0.0),
+      margin: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
