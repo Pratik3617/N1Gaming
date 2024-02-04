@@ -3,9 +3,9 @@ import 'package:bet/providers/TransactionListProvider.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> fetchTransactionList(String username, TransactionProvider transactionProvider) async {
-  final apiUrl = 'http://3.108.237.235/showTransaction';
+
   final response = await http.get(
-    Uri.parse('$apiUrl/$username'),
+    Uri.parse('http://3.108.237.235/showTransaction/$username'),
   );
 
   if (response.statusCode == 200) {
